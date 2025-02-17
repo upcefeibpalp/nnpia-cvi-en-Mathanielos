@@ -1,0 +1,34 @@
+ChatGPT
+## Předem vysvětlení chatgpt o jaký projekt se jedná atd. a pokračování specifickými dotazy z hlediska zadání
+
+## Využit jeden velký prompt, aby se zbytečně nevyužívalo více dotazů (ChatGPT předem ví o všech třídách a celém projektu, takže upraví specifickou část)
+-- Prompt --
+## **7. Vytvoření složky prompts a přidání Spring Boot DevTools** ![AI](https://img.shields.io/badge/AI-yellow)
+
+  - Do projektu přidejte závislost **Spring Boot DevTools.**
+
+  ### **8. Teoretické úkoly** ![AI](https://img.shields.io/badge/AI-yellow)
+
+  - K čemu slouží závislost Spring Boot DevTools?
+  - Jaká je její největší výhoda?
+
+  ### **9. Přidání dvou nových endpointů do UserController** ![AI](https://img.shields.io/badge/AI-yellow)
+
+  - Upravte endpoint /user aby přijal ID uživatele jako **Query parameter** (/user?id=1) a vrátí odpovídající instanci třídy User.
+  - Otestujte endpoint pomocí **Postmanu**.
+  - Upravte endpoint /user aby přijal ID uživatele jako **Path parameter** (/user/{id}) a vrátí odpovídající instanci třídy User.
+  - Otestujte endpoint pomocí **Postmanu**.
+  - Po ověřené funkčnosti přepište adresu endpointu /users vracející všechny uživatele  na /user.
+  - Otestujte endpoint pomocí **Postmanu**.
+-- Odpoveď na teoretické dotazy --
+Zkontrolováno z : "https://www.tpointtech.com/spring-boot-devtools"
+## K čemu slouží závislost Spring Boot DevTools?
+Odpověd:
+    K čemu slouží Spring Boot DevTools?
+    Umožňuje automatický restart aplikace při změně kódu, aniž byste museli manuálně zastavit a spustit server znovu.
+
+## Jaká je jeho největší výhoda?
+Odpověď:
+     ✅ Rychlejší vývoj – změny v kódu se ihned projeví v běžící aplikaci.
+     ✅ Live reload v prohlížeči – pokud je povolen, stránka se automaticky obnoví.
+     ✅ Lepší ladění – vypíná cache v Thymeleaf, takže změny v šablonách se okamžitě projeví.

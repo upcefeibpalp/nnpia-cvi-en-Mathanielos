@@ -1,0 +1,111 @@
+ChatGPT
+-- Prompt --
+for this project I need to do this: "1. Docker Compose
+
+    Přidejte do projektu následující závislosti:
+        Spring Data JPA
+        PostgreSQL Driver
+    Vytvořte soubor docker-compose.yml a napište konfiguraci tak aby vytvořila kontejner s PostgreSQL databází:
+
+version: "3.9"
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: nnpia
+      POSTGRES_USER: nnpia
+      POSTGRES_PASSWORD: nnpia
+    ports:
+      - 5432:5432
+
+    Spusťe docker compose a ověřte že databáze běží.
+    Pomocí Postico 2, JetBrains DataGrip nebo JetBrains IntelliJ se připojte k databázi.
+    Vytvořte konfiguraci pro připojení k databázi v application.properties.
+    Restartujte aplikaci a ověřte že se aplikace připojila k databázi pomocí logů.
+    Pokud Vám nefunguje Docker využijte H2 memory databázi."
+-- Prompt --
+how to setup the intellij database tool ?
+-- Prompt --
+now continue with this: "
+6. Úprava JPA repository a implementace nového endpointu
+   Implementujte pomocí Query methods v UserRepository metodu pro:
+   Získání uživatele podle hodnoty parametru email.
+   Vybere z databáze záznam, kde email je roven hodnotě v parametru metody.
+   Upravte v UserController endpoint pro získání všech uživatelů.
+   Přidejte mu nepovinný Query parameter email.
+   Pokud bude v parametru hodnota, vyberte uživatele s daným emailem.
+   Přidejte potřebné metody do UserService.
+   Chybové stavy zatím v tomto cvičení neošetřujte."
+-- Prompt --
+now lets do some logging:
+"7. Logování
+Někdy se dostanete do situace kdy budete potřebovat vědět jaké SQL dotazy se posílají do databáze. Upravte application.properties tak aby logovala SQL dotazy."
+Update my application properties which is this:
+"spring.application.name=nnpiacv
+ server.port=9000
+ spring.datasource.url=jdbc:postgresql://localhost:5432/nnpia
+ spring.datasource.username=nnpia
+ spring.datasource.password=nnpia
+ spring.datasource.driver-class-name=org.postgresql.Driver
+
+ spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+ spring.jpa.hibernate.ddl-auto=update
+"
+-- Prompt --
+Now I do have some theoretical questions:
+"8. Teoretické úkoly AI
+
+Zjištěte všechny hodnoty vlastnosti spring.jpa.hibernate.ddl-auto a co tyto hodnoty znamenají.
+K čemu slouží anotace @GeneratedValue a jakých hodnoto může nabývat parametr stragety.
+K čemu slouží anotace @Column.
+K čemu slouží anotace @Transactional.
+K čemu slouží anotace @Query.
+K čemu slouží anotace @JsonIgnore.
+"
+Chatgpt odpověď:
+"1. spring.jpa.hibernate.ddl-auto values:
+
+     none: No schema changes.
+     update: Updates schema to match entity.
+     create: Drops and recreates schema (data lost).
+     create-drop: Same as create, but drops schema on shutdown.
+     validate: Validates schema but doesn't modify it.
+
+ 2. @GeneratedValue and strategy values:
+
+     AUTO: Hibernate picks strategy.
+     IDENTITY: Auto-incrementing column.
+     SEQUENCE: Uses a database sequence.
+     TABLE: Uses a table for key generation.
+
+ 3. @Column purpose:
+
+ Specifies database column details (name, nullable, length, etc.) for an entity field.
+ 4. @Transactional purpose:
+
+ Manages database transactions, ensuring atomicity (commit or rollback on errors).
+ 5. @Query purpose:
+
+ Defines custom queries for Spring Data JPA repositories (JPQL or SQL).
+ 6. @JsonIgnore purpose:
+
+ Excludes fields from JSON serialization (useful for sensitive data or circular references)."
+
+ Pro zjištění jestli je to správně: "https://docs.spring.io/spring-boot/docs/1.1.0.M1/reference/html/howto-database-initialization.html"
+ -- Prompt --
+ Now we need to create another entity as this assignment says, maybe we can do profile?:
+ "9. Relace
+
+  Vymyslete další entitu, která bude v libovolném vztahu s User a přidejte jí do projektu. Pokud Vás nic nenapadá využijte AI.
+
+      Třída musí mít alespoň 1 atribut, který nesouvisí s relací.
+      Vytvořte relaci pomocí anotací s nově vytvořenou třídou User. Využijte (@OneToOne, @OneToMany, @ManyToMany)
+      Vložte alespoň jeden nový záznam do tabulky, který bude ve vztahu s existujícím záznamem z tabulky User.
+"
+-- Prompt --
+and at last add this: "10. Docker Compose Support
+Přidejte do projektu závislost pro Docker Compose Support.
+Vymažte konfiguraci pro připojení k databázi z application.properties.
+Ověřte, že připojení k databázi je stále funkční"
+

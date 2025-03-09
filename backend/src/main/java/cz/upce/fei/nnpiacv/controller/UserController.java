@@ -2,13 +2,15 @@ package cz.upce.fei.nnpiacv.controller;
 
 import cz.upce.fei.nnpiacv.domain.User;
 import cz.upce.fei.nnpiacv.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users") // Používáme plural pro RESTful konvenci
 public class UserController {
     private final UserService userService;
 
@@ -16,27 +18,67 @@ public class UserController {
         this.userService = userService;
     }
 
-    // ✅ Endpoint s Query parametrem: /user?id=1
-    @GetMapping
-    public User getUserById(@RequestParam Long id) {
-        return userService.findUserById(id);
-    }
-
-    // ✅ Endpoint s Path parametrem: /user/1
+    // Endpoint pro získání uživatele podle ID pomocí path parametru
     @GetMapping("/{id}")
-    public User getUserByIdPath(@PathVariable Long id) {
-        return userService.findUserById(id);
+    public ResponseEntity<User> getUserByIdPath(@PathVariable Long id) {
+        User user = userService.findUserById(id);
+        if (user != null) {
+            return ResponseEntity.ok(user); // 200 OK pokud je uživatel nalezen
+        } else {
+            return ResponseEntity.status(404).body(null); // 404 Not Found pokud uživatel neexistuje
+        }
     }
 
-    // ✅ Vrácení všech uživatelů, nebo podle emailu
-    @GetMapping("/all")
-    public Collection<User> getAllUsers(@RequestParam(required = false) String email) {
+    // Endpoint pro získání všech uživatelů nebo podle emailu
+    @GetMapping
+    public ResponseEntity<Collection<User>> getAllUsers(@RequestParam(required = false) String email) {
+        Collection<User> users;
         if (email != null) {
-            // Return the user by email if the parameter is provided
-            return List.of(userService.findUserByEmail(email));
+            User userByEmail = userService.findUserByEmail(email);
+            if (userByEmail != null) {
+                users = List.of(userByEmail); // Pokud existuje uživatel s tímto emailem
+            } else {
+                return ResponseEntity.status(404).body(null); // 404 Not Found, pokud uživatel s emailem neexistuje
+            }
         } else {
-            // Return all users if no email is provided
-            return userService.getAllUsers();
+            users = userService.getAllUsers(); // Pokud není parametr email, vrátíme všechny uživatele
         }
+        return ResponseEntity.ok(users); // 200 OK
+    }
+
+    // Endpoint pro přidání nového uživatele
+    @PostMapping
+    public ResponseEntity<User> addUser(@RequestBody User user) {
+        User createdUser = userService.addUser(user);
+        return ResponseEntity.status(201).body(createdUser); // 201 Created pokud je uživatel úspěšně vytvořen
+    }
+
+    // Endpoint pro smazání uživatele podle ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        boolean isDeleted = userService.deleteUserById(id);
+        if (isDeleted) {
+            return ResponseEntity.ok("Uživatel byl úspěšně smazán."); // 200 OK pokud byl uživatel smazán
+        } else {
+            return ResponseEntity.status(404).body("Uživatel s tímto ID neexistuje."); // 404 Not Found pokud uživatel neexistuje
+        }
+    }
+    // Endpoint pro aktualizaci uživatele
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody @Valid User updatedUser) {
+        User existingUser = userService.findUserById(id);
+
+        if (existingUser == null) {
+            return ResponseEntity.status(404).body(null);  // Pokud uživatel neexistuje
+        }
+
+        // Pokud existuje, aktualizujeme údaje
+        existingUser.setEmail(updatedUser.getEmail());
+        existingUser.setPassword(updatedUser.getPassword());
+
+        // Uložíme změny
+        User savedUser = userService.addUser(existingUser);
+
+        return ResponseEntity.ok(savedUser);  // Vrátíme aktualizovaného uživatele
     }
 }

@@ -26,12 +26,11 @@ public class DataInitializer implements CommandLineRunner {
             return userRepository.save(newUser);
         });
 
-        // Create a profile for the user
-        Profile profile = new Profile("Admin User", "This is the admin's bio", user);
-        profileRepository.save(profile);
-
-        // Log the profile creation
-        System.out.println("Profile created for user: " + user.getEmail());
+        // Try to find the profile for this user, and create it if not found
+        profileRepository.findByUserId(user.getId()).orElseGet(() -> {
+            Profile newProfile = new Profile("Admin User", "This is the admin's bio", user);
+            return profileRepository.save(newProfile);
+        });
     }
 
 }

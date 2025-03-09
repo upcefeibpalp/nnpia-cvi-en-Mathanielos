@@ -15,18 +15,28 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // Existing method to get all users
     public Collection<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // Existing method to get user by ID
     public User findUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
-    // New method to get a user by email
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    public User addUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public boolean deleteUserById(Long id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
 }

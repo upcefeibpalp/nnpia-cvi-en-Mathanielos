@@ -1,0 +1,24 @@
+ChatGPT
+- Na všechny prompty bylo využito již použité konverzace ChatGPT, který měl informace o celém projektu
+-- Prompt --
+teď pokračujme tímto: "4. Aktualizace uživatele
+
+Vytvořte endpoint pro aktualizaci uživatele podle id. Výstup zvalidujte."
+
+--Prompt--
+Pokračujme postupně těmito kroky:
+"6. Spring Security
+
+ - Příprava na semestrální práci. Implementujte do projektu autentizaci uživatelů JWT tokeny.
+
+ - Vytvořte endpoint pro přihlášení uživatele, který vygeneruje JWT token a vrátí ho jako odpověď.
+
+ - Přidejte do projektu následující závislosti:
+   - **Spring Security**
+
+ - Zabezpečte `PUT` a `DELETE` endpointy autentifikací. Autorizaci implementujte až v semestrální práci.
+   - V těle metod kontrolerů nesmí být žádný kód související s autentizací.
+   - JWT token musí být při autentifikaci zaslán v hlavičce."
+--Kontrola promptu--
+V předchozím promptu nastala chyba kdy chatgpt používal zastaralé dependencies,
+takže pomocí této stránky to bylo opraveno: "https://github.com/jwtk/jjwt#installation"

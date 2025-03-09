@@ -1,5 +1,6 @@
 package cz.upce.fei.nnpiacv.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class Profile {
 
     @OneToOne
     @JoinColumn(name = "user_id") // This column will link Profile to User
+    @JsonBackReference
     private User user;
 
     public Profile() {

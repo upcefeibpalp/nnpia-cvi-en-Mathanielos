@@ -1,0 +1,23 @@
+ChatGPT
+-- Využit stejný chat kde již byla AI naučena na celý projekt, ale zároveň pro jistotu při každém promptu poslány části kódu, které se mají upravit, aby ChatGPT tolik nevymýšlel --
+
+-- Prompt --
+Udělej do projektu formulář a zde máš celé zadání:
+"- Vytvořte formulář pro přidání uživatele.
+    - Formulář vytvořte jako samostatnou komponentu a umístěte jí do `App.tsx`. 
+        - Pole formuláře by měly reflektovat atributy entity `User`.
+    - Přidejte [validaci](https://react-hook-form.com/get-started#SchemaValidation) na straně frontendu pro všechny atributy.
+        - Jednotlivé podmínky validace zvolte dle svého uvážení.
+        - Pokud využijete schémata, bude nutné doinstalovat další závislosti.
+- Přidejte tlačítko pro odeslání formuláře.
+    - Po odeslání formuláře zobrazte všechny hodnoty v konzoli."
+
+-- Dobrovolné --
+-- Prompt --
+Ještě musíme napojit přidání uživatele na backend, zde je zadání: 
+"Napojení na backend 
+- Upravte komponentu pro přidání uživatele tak, aby data byla odeslána na backend.
+- Využijte k tomu endpoint pro přidání uživatele z předchozích cvičení.
+- Vymažte všechny výskyty v konzoli a ověřte, že data byla úspěšně přidána do databáze."
+
+

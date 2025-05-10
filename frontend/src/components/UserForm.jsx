@@ -24,8 +24,8 @@ export default function UserForm() {
             };
 
             console.log('Odesílám data na backend:', payload);
-
-            await axios.post('http://localhost:9000/api/v1/users', payload);
+            console.log('${import.meta.env.VITE_API_URL}/api/v1/users');
+            await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/users`, payload);
             reset();
             alert('Uživatel úspěšně přidán!');
         } catch (error) {

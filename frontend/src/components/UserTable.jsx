@@ -8,7 +8,7 @@ export default function UserTable({ users }) {
 
     const toggleActive = async (userId, currentState) => {
         try {
-            const endpoint = `http://localhost:9000/api/v1/users/${userId}/${currentState ? 'deactivate' : 'activate'}`;
+            const endpoint = `${import.meta.env.VITE_API_URL}/api/v1/users/${userId}/${currentState ? 'deactivate' : 'activate'}`;
             await axios.post(endpoint);
             queryClient.invalidateQueries(['users']); // ✅ znovu načte data
         } catch (err) {

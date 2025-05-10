@@ -1,6 +1,8 @@
 package cz.upce.fei.nnpiacv.controller;
 
 import cz.upce.fei.nnpiacv.domain.User;
+import cz.upce.fei.nnpiacv.exception.EmailAlreadyExistsException;
+import cz.upce.fei.nnpiacv.exception.UserNotFoundException;
 import cz.upce.fei.nnpiacv.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -10,75 +12,61 @@ import java.util.Collection;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users") // Používáme plural pro RESTful konvenci
+@RequestMapping("/api/v1/users")
 public class UserController {
-    private final UserService userService;
 
+    private final UserService userService;
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    // Endpoint pro získání uživatele podle ID pomocí path parametru
+    /* ---------- GET /{id} ---------- */
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserByIdPath(@PathVariable Long id) {
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
         User user = userService.findUserById(id);
-        if (user != null) {
-            return ResponseEntity.ok(user); // 200 OK pokud je uživatel nalezen
-        } else {
-            return ResponseEntity.status(404).body(null); // 404 Not Found pokud uživatel neexistuje
-        }
+        return ResponseEntity.ok(user);
     }
 
-    // Endpoint pro získání všech uživatelů nebo podle emailu
+    /* ---------- GET (all or by email) ---------- */
     @GetMapping
     public ResponseEntity<Collection<User>> getAllUsers(@RequestParam(required = false) String email) {
-        Collection<User> users;
         if (email != null) {
-            User userByEmail = userService.findUserByEmail(email);
-            if (userByEmail != null) {
-                users = List.of(userByEmail); // Pokud existuje uživatel s tímto emailem
-            } else {
-                return ResponseEntity.status(404).body(null); // 404 Not Found, pokud uživatel s emailem neexistuje
-            }
-        } else {
-            users = userService.getAllUsers(); // Pokud není parametr email, vrátíme všechny uživatele
+            return ResponseEntity.ok(List.of(userService.findUserByEmail(email)));
         }
-        return ResponseEntity.ok(users); // 200 OK
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    // Endpoint pro přidání nového uživatele
+    /* ---------- POST ---------- */
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody User user) {
-        User createdUser = userService.addUser(user);
-        return ResponseEntity.status(201).body(createdUser); // 201 Created pokud je uživatel úspěšně vytvořen
+    public ResponseEntity<User> addUser(@RequestBody @Valid User user) {
+        return ResponseEntity.status(201).body(userService.addUser(user));
     }
 
-    // Endpoint pro smazání uživatele podle ID
+    /* ---------- DELETE ---------- */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        boolean isDeleted = userService.deleteUserById(id);
-        if (isDeleted) {
-            return ResponseEntity.ok("Uživatel byl úspěšně smazán."); // 200 OK pokud byl uživatel smazán
-        } else {
-            return ResponseEntity.status(404).body("Uživatel s tímto ID neexistuje."); // 404 Not Found pokud uživatel neexistuje
-        }
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUserById(id);
+        return ResponseEntity.ok().build();
     }
-    // Endpoint pro aktualizaci uživatele
+
+    /* ---------- PUT ---------- */
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody @Valid User updatedUser) {
-        User existingUser = userService.findUserById(id);
+    public ResponseEntity<User> updateUser(@PathVariable Long id,
+                                           @RequestBody @Valid User upd) {
+        User existing = userService.findUserById(id);
+        existing.setEmail(upd.getEmail());
+        existing.setPassword(upd.getPassword());
+        return ResponseEntity.ok(userService.addUser(existing));
+    }
 
-        if (existingUser == null) {
-            return ResponseEntity.status(404).body(null);  // Pokud uživatel neexistuje
-        }
+    /* ---------- Exception handlers ---------- */
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> notFound(UserNotFoundException ex) {
+        return ResponseEntity.status(404).body(ex.getMessage());
+    }
 
-        // Pokud existuje, aktualizujeme údaje
-        existingUser.setEmail(updatedUser.getEmail());
-        existingUser.setPassword(updatedUser.getPassword());
-
-        // Uložíme změny
-        User savedUser = userService.addUser(existingUser);
-
-        return ResponseEntity.ok(savedUser);  // Vrátíme aktualizovaného uživatele
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<String> conflict(EmailAlreadyExistsException ex) {
+        return ResponseEntity.status(409).body(ex.getMessage());
     }
 }

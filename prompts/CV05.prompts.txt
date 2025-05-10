@@ -1,0 +1,34 @@
+ChatGPT
+-- Využíváno stejného chatu, jako při předchozích pracích, aby si stále AI pamatovalo o co se jedná --
+-- Ze začátku napsáno, že na všechny prompty kde bude možnost A/B se bude pracovat na možnosti A --
+-- Jelikož mělo AI velký problém s pochopením toho, že `@MockitoBean` vážně existuje, tak byla použita pro poučení AI
+tato stackoverflow konverzace: "https://stackoverflow.com/questions/79243535/what-is-the-replacement-for-the-deprecated-mockbeans-in-springboot-3-4-0"
+
+-- Prompt --
+-- Prvně znovu poslána třída UserService, aby využil nejnovější verzi --
+Pokračuj v našem projektu tímto zadáním s tím, že jak jsem zmínil pracuj na možnosti A:
+"### 3. Testování GET endpointu (Chybový stav)
+
+ - Vytvořte testy pro GET endpoint `/api/v1/users/{id}` který otestuje chybový stav **404 Not Found**.
+     - Test se pokusí získat uživatele s neexistujícím id.
+ - Vytvořte vhodně pojmenovanou výjimku pro chybový stav.
+     - Upravte `UserService` tak aby ověřil zdali uživatel s hledaným id existujte v databázi. Pokud ne vyhodí výjimku.
+     - Implementujte pomocí `@ExceptionHandler` v `UserController` [ošetření chybového stavu](https://spring.io/blog/2013/11/01/exception-handling-in-spring-mvc).
+
+ - ![Možnost A](https://img.shields.io/badge/Možnost-A-blue)  Nastavte mock tak aby vyhodil vyjímku při zavolání příslušné metody v `UserService` s příslušnými parametry.
+ - ![Možnost B](https://img.shields.io/badge/Možnost-B-green) Zajistěte, že v H2 databázi nebude existovat uživatel s testovaným ID."
+-- Prompt --
+Pokračuj tímto do našeho projektu:
+"### 4. Testování POST endpointu (Úspěšný stav)
+
+ - Pomocí AI vygenerujte kód pro testování POST endpointu `/api/v1/users` s očekávaným návratovým kódem 201 Created.
+ - Výstup zvalidujte."
+-- Prompt --
+Jako poslední přidej tuto část:
+"### 5. Testování POST endpointu (Chybový stav)
+
+ - Vytvořte test pro POST endpoint `/api/v1/users` s očekávaným návratovým kódem **409 Coflict**.
+     - Test se pokusí vytvořit uživatele s již existujícím emailem.
+ - Vytvořte vhodně pojmenovanou výjimku pro chybový stav.
+     - Upravte `UserService` tak aby ověřoval existenci uživatele s daným emailem a vyhazoval výjimku pokud daný uživatel již existuje.
+     - Implementujte pomocí `@ExceptionHandler` v `UserController` [ošetření chybového stavu](https://spring.io/blog/2013/11/01/exception-handling-in-spring-mvc)."

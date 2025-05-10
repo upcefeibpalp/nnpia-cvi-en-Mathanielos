@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { login } from '../store/authenticationSlice';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../config';
 
 export default function UserLoginForm() {
     const { register, handleSubmit } = useForm();
@@ -13,7 +14,7 @@ export default function UserLoginForm() {
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, {
+            const response = await axios.post(`${API_URL}/login`, {
                 email: data.email,
                 password: data.password
             });

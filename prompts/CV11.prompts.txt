@@ -1,0 +1,37 @@
+ChatGPT
+-- Jelikož využívám React a ne Typescript, tak jsem musel postupovat jinými kroky, ale celkově jsem se dopracoval ke stejnému výsledku --
+
+-- Prompt --
+-- Zeptání ChatGPT jak udělat toto zadání na react a úprava podle něho --
+Potřebuji udělat toto zadání na react a ne typescript: 
+"### 1. Konfigurace Jest a React Testing Library
+
+_Vite v základu neobsahuje Jest. Pro fungování Jest a React Testing Library je nutné provést [dodatečnou konfiguraci](https://dev.to/teyim/effortless-testing-setup-for-react-with-vite-typescript-jest-and-react-testing-library-1c48)._
+_Alternativně můžete použít Vitetest_
+
+- Nainstalujte pomocí návodu všechny závislosti včetně podpory pro TypeScript. Použijte následující seznam jako TODO list:
+    - Upravte soubor `tsconfig.json`.
+    - Upravte soubor `vite.config.ts`.
+    - Vytvořte soubory `jest.setup.ts` a `jest.config.js` s konfigurací testovacího prostředí.
+    - Přidejte nové scripty`package.json`:
+        - `test` pro spuštění testování pomocí `jest`.
+        - `coverage` pro vygenerování testovacího reportu.
+"
+-- Prompt --
+-- Jelikož nemám tsconfig.json nechal jsem si vygenerovat od AI základní tsconfig a vysvětlit ten --
+Jelikož nemám tsconfig, vygeneruj mi základní, jak by mohl +- vypadat a vysvětli mi ho jak zní v tomto zadání:
+"Využijte AI a nechte si vysvětlit všechny nově přidané property v `tsconfig.json`."
+
+Odpověď:
+{
+  "compilerOptions": {
+    "target": "esnext",                  // Výstupní verze JS (např. ES6, ES2015+)
+    "module": "esnext",                  // Systém modulů (např. commonjs, esnext)
+    "jsx": "react-jsx",                  // JSX transformace (nový způsob pro React 17+)
+    "strict": true,                      // Zapne přísný režim (doporučeno)
+    "esModuleInterop": true,             // Umožňuje importy CommonJS modulů
+    "skipLibCheck": true,                // Přeskočí kontrolu typů knihoven (rychlejší build)
+    "forceConsistentCasingInFileNames": true // Case-sensitive soubory
+  },
+  "include": ["src"]                     // Které složky/ soubory má TypeScript procházet
+}

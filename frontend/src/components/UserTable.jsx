@@ -2,13 +2,14 @@ import React from 'react';
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material';
 import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
+import { API_URL } from '../config';
 
 export default function UserTable({ users }) {
     const queryClient = useQueryClient();
 
     const toggleActive = async (userId, currentState) => {
         try {
-            const endpoint = `${import.meta.env.VITE_API_URL}/api/v1/users/${userId}/${currentState ? 'deactivate' : 'activate'}`;
+            const endpoint = `${API_URL}/api/v1/users/${userId}/${currentState ? 'deactivate' : 'activate'}`;
             await axios.post(endpoint);
             queryClient.invalidateQueries(['users']); // ✅ znovu načte data
         } catch (err) {

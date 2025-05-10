@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { TextField, Button, Box } from '@mui/material';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 export default function UserForm() {
     const {
@@ -24,8 +25,7 @@ export default function UserForm() {
             };
 
             console.log('Odesílám data na backend:', payload);
-            console.log('${import.meta.env.VITE_API_URL}/api/v1/users');
-            await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/users`, payload);
+            await axios.post(`${API_URL}/api/v1/users`, payload);
             reset();
             alert('Uživatel úspěšně přidán!');
         } catch (error) {

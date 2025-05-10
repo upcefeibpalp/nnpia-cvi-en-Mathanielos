@@ -48,4 +48,16 @@ public class UserService {
         userRepository.deleteById(id);
         return true;
     }
+    public User activateUser(Long id) {
+        User user = findUserById(id);
+        user.setActive(true);
+        return userRepository.save(user);
+    }
+
+    public User deactivateUser(Long id) {
+        User user = findUserById(id);
+        user.setActive(false);
+        return userRepository.save(user);
+    }
+
 }

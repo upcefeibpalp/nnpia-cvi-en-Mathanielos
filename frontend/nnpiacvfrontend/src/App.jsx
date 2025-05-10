@@ -1,43 +1,31 @@
 import React from 'react';
+import axios from 'axios';
 import { Container, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 import UserTable from './components/UserTable';
 import './App.css';
 
+const fetchUsers = async () => {
+    const res = await axios.get('http://localhost:9000/api/v1/users');
+    return res.data;
+};
+
 function App() {
-    const sampleUsers = [
-        {
-            id: 1,
-            email: 'alice@example.com',
-            password: 'alicePass',
-            version: 1,
-            profile: { id: 1, fullName: 'Alice A.', bio: 'Bio Alice' },
-            active: false,
-        },
-        {
-            id: 2,
-            email: 'bob@example.com',
-            password: 'bobPass',
-            version: 3,
-            profile: { id: 2, fullName: 'Bob B.', bio: 'Bio Bob' },
-            active: true,
-        },
-        {
-            id: 3,
-            email: 'carol@example.com',
-            password: 'carolPass',
-            version: 2,
-            profile: { id: 3, fullName: 'Carol C.', bio: 'Bio Carol' },
-            active: false,
-        }
-    ];
+    const { data: users = [], isLoading, error } = useQuery({
+        queryKey: ['users'],
+        queryFn: fetchUsers,
+        refetchInterval: 5000 // automatický refresh každých 5s
+    });
+
+    if (isLoading) return <p>Načítání uživatelů...</p>;
+    if (error) return <p>Chyba při načítání: {error.message}</p>;
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4 }}>
             <Typography variant="h4" gutterBottom>
                 NNPIA – Single-page Application
             </Typography>
-
-            <UserTable initialUsers={sampleUsers} />
+            <UserTable users={users} />
         </Container>
     );
 }

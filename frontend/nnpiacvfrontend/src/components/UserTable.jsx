@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
-import {
-    Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow, Paper, Button
-} from '@mui/material';
+import React from 'react';
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material';
+import axios from 'axios';
+import { useQueryClient } from '@tanstack/react-query';
 
-export default function UserTable({ initialUsers }) {
-    const [users, setUsers] = useState(initialUsers);
+export default function UserTable({ users }) {
+    const queryClient = useQueryClient();
 
-    const toggleActive = (id) => {
-        setUsers(users.map(u =>
-            u.id === id ? { ...u, active: !u.active } : u
-        ));
+    const toggleActive = async (userId, currentState) => {
+        try {
+            const endpoint = `http://localhost:9000/api/v1/users/${userId}/${currentState ? 'deactivate' : 'activate'}`;
+            await axios.post(endpoint);
+            queryClient.invalidateQueries(['users']); // ✅ znovu načte data
+        } catch (err) {
+            console.error('Chyba při změně stavu:', err);
+        }
     };
 
     return (
@@ -28,7 +31,6 @@ export default function UserTable({ initialUsers }) {
                         <TableCell>Action</TableCell>
                     </TableRow>
                 </TableHead>
-
                 <TableBody>
                     {users.map(user => (
                         <TableRow key={user.id}>
@@ -36,15 +38,14 @@ export default function UserTable({ initialUsers }) {
                             <TableCell>{user.email}</TableCell>
                             <TableCell>{user.password}</TableCell>
                             <TableCell>{user.version}</TableCell>
-                            <TableCell>{user.profile.fullName}</TableCell>
-                            <TableCell>{user.profile.bio}</TableCell>
+                            <TableCell>{user.profile?.fullName || ''}</TableCell>
+                            <TableCell>{user.profile?.bio || ''}</TableCell>
                             <TableCell>{user.active ? 'Yes' : 'No'}</TableCell>
                             <TableCell>
                                 <Button
-                                    size="small"
                                     variant="contained"
                                     color={user.active ? 'error' : 'success'}
-                                    onClick={() => toggleActive(user.id)}
+                                    onClick={() => toggleActive(user.id, user.active)}
                                 >
                                     {user.active ? 'Deactivate' : 'Activate'}
                                 </Button>

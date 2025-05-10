@@ -1,0 +1,62 @@
+ChatGPT
+-- Použit stejný chat jako dříve a při každém promptu specifikovaná část, která se má upravit --
+
+-- Prompt (Zároveň ještě specifikování tříd) --
+Udělej prosím toto zadání pro náš projekt:
+"- Do entity `User.java` přidejte atribut `active` typu `boolean`.
+    - Výchozí hodnotu pro již existující uživatele nastavte na `true`.
+- Přidejte nový atribut i do `UserResponseDto.java`.
+    - Upravte kód tak aby se hodnota `active` zobrazovala v REST odpovědi.
+- Deaktivujte nebo upravte ochranu CORS tak aby akceptovala requesty z vývojového serveru pro React.js.
+  - React.js Server běží na jiném portu než backend. Ochrana bez dodatečného nastavení zabrání provedení requestu.
+- Spusťte Spring Boot."
+
+-- Prompt --
+Teď pokračuj tímto:
+"- Vložte závislost na knihovnu [AXIOS](https://axios-http.com/docs/intro) do projektu.
+- Upravte kód z předchozího úkolu tak, aby místo Fetch API byla použita knihovna AXIOS.
+    - Dejte si pozor jak IntelliJ IDEA vytvoří import."
+-- Prompt pro teoretickou část --
+Odpověz na tyto otázky stručně:
+"- Proč bychom neměli ochranu CORS vypínat v produkčním prostředí?
+- Jak nastavit Spring Boot aby CORS vypnul/nastavil jen pro vývojové prostředí?
+- V čem je Fetch API odlišné od AXIOS API? Jaké jsou výhody a nevýhody obou přístupů?
+- V čem je výhodné použít závislost Tanstack Query?
+"
+Odpověď:
+"Proč nevypínat CORS v produkci?
+→ Ochrana před neautorizovanými požadavky z cizích domén – bezpečnostní riziko.
+
+Jak CORS zapnout jen ve vývoji?
+→ Použij Spring [profiles] a konfiguruj @CrossOrigin jen pokud @Profile("dev") nebo pomocí CorsConfigurationSource ve @Configuration třídě podmíněné profilem.
+
+Fetch vs Axios?
+
+    Fetch: nativní, nízkoúrovňové, bez interceptors a automatického JSON.
+
+    Axios: přehlednější, jednodušší API, podporuje interceptors, automaticky parsuje JSON.
+
+Výhody Tanstack Query:
+→ Automatická cache, refetch, stav načítání, error handling a jednoduchý způsob práce s async daty."
+
+-- Kontrola online na teoretickou otázku "Fetch vs Axios? --
+"https://www.geeksforgeeks.org/difference-between-fetch-and-axios-js-for-making-http-requests/"
+
+-- Dobrovolné části --
+-- Prompt (s tímhle mělo ai celkem problém takže bylo potřeba se ptát několikrát a opravit postupně chyby krok po kroku) --
+Udělej prosím toto zadání:
+"- Vytvořte dva nové POST endpointy v `UserController.java` které budou měnit stav atributu `active`:
+    - První endpoint bude měnit stav `active` uživatele na `true`.
+    - Druhý endpoint bude měnit stav `active` uživatele na `false`.
+    - Implementujte logiku pro změnu stavu uživatele v `UserService.java`.
+    - Ověřte funkčnost endpointů pomocí Postmanu.
+- Upravte kód z předchozího úkolu tak, aby aby se přepnutí stavu `active` uživatele provedlo pomocí POST requestu a projevilo v databázi."
+
+-- Prompt (ChatGPT si začal v průběhu vymýšlet tak bylo potřeba mu znovu dát třídy, které má upravit a až poté splnil to co se po něm chtělo) --
+Ještě na závěr udělej toto:
+"- Vložte závislost na knihovnu [TanstackQuery](https://tanstack.com/query/latest/docs/framework/react/installation) do projektu.
+- Upravte kód z předchozího úkolu tak, aby společně s AXIOS byly použity hooky TanstackQuery.
+- Nastavte TastackQuery tak, aby se každých 5 sekund automaticky aktualizovala data.
+    - Funkčnost řešení ověřte v prohlížeči v režimu vývojáře (záložka `Síť` nebo `Network`).
+    - Každých 5 vteřin by měl být proveden request na backend."
+

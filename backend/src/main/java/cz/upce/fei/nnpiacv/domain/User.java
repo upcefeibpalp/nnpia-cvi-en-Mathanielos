@@ -30,15 +30,16 @@ public class User {
     private String password;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonManagedReference // Řídí serializaci směrem k `Profile`
+    @JsonManagedReference
     private Profile profile;
 
     @Version
     private Integer version;
 
-    // Default constructor
-    public User() {
-    }
+    @Column(nullable = false)
+    private boolean active = true;
+
+    public User() {}
 
     public User(String email, String password) {
         this.email = email;
